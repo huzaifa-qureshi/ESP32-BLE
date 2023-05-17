@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "407255833366",
+    "firebase_url": "https://esp32-ble-app-default-rtdb.firebaseio.com",
+    "project_id": "esp32-ble-app",
+    "storage_bucket": "esp32-ble-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407255833366:android:4f05693d4a353ec79fce37",
+        "android_client_info": {
+          "package_name": "com.quarks.esp32ble"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "407255833366-02mt0h425di12p4inkthqfiabf6m2ilu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB87PBjs7Al2fGnDL-xM65_-AxWPScK-SU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "407255833366-02mt0h425di12p4inkthqfiabf6m2ilu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

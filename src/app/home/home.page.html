@@ -1,20 +1,76 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      ESP32 BLE App
     </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button fill="solid" color="primary" (click)="Scan()">
+        Scan
+        <ion-icon slot="end" name="bluetooth"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card *ngIf="!scanned">
+    <ion-card-content>
+      <h3>
+        PRESS SCAN TO SEARCH FOR DEVICES
+      </h3>
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="scanned"> <!-- DEVICES -->
+    <ion-card-header>
+      <ion-card-title>
+        Devices:
+      </ion-card-title>
+    </ion-card-header>
+    <ng-container *ngIf="bluetoothScanResults.length>0">
+      <ion-item *ngFor="let scanResult of bluetoothScanResults">
+        <ion-label>
+          <h2>{{scanResult.device.name ?? "No Name"}}</h2>
+          <p style="font-size: 8px">{{scanResult.device.deviceId}}</p>
+        </ion-label>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+        <ion-button
+          (click)="disconnectFromBluetoothDevice(scanResult)"
+          color="danger"
+          slot="end"
+        >
+          Disconnect
+        </ion-button>
+        <ion-button (click)="connectToBluetoothDevice(scanResult)" slot="end">
+          Connect
+        </ion-button>
+      </ion-item>
+    </ng-container>
+  </ion-card>
+  
+  <ion-card *ngIf="connected"> 
+    <ion-card-header>
+      <ion-card-title>
+        Data
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+
+      <ion-buttons slot="primary">
+        <ion-button fill="solid" color="primary" (click)="getData(connectedDevice)">
+          Get Data
+          <ion-icon slot="end" name="refresh"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+      <p> Moisture : {{moisture}} </p>
+      <p> Temperature : {{temperature}} </p>
+      <p> Conductivity : {{conductivity}} </p>
+      <p> Latitude : {{latitude}} </p>
+      <p> Longitude : {{longitude}} </p>
+      <p> Time : {{moisture}} </p>
+      <ion-button fill="solid" color="primary" expand="full">
+        SEND TO FIREBASE
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
