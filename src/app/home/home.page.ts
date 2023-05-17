@@ -26,6 +26,7 @@ export class HomePage {
   conductivity: number = 0;
   longitude: number = 0;
   latitude: number = 0;
+  time: string = "";
   connected: boolean = false;
   scanned: boolean = false;
   connectedDevice!: BleDevice;
@@ -121,37 +122,41 @@ export class HomePage {
       try{
         await this.getLocation();
         
-        setTimeout (async () => {
-        let moisturevalue = dataViewToText(
-          await BleClient.read(
-            device.deviceId, 
-            MOISTURE_UUID , 
-            MOISTURE_CHARATERISTIC_UUID ));
-          }, 1500);
+        await BleClient.startNotifications(
+          device.deviceId,
+          MOISTURE_UUID, 
+          MOISTURE_CHARATERISTIC_UUID,
+          (moisturevalue) => {
+            console.log(dataViewToText(moisturevalue));
+            this.moisture = Number(dataViewToText(moisturevalue));
+            console.log(this.moisture)  
+          }
+        );
 
-        // console.log(moisturevalue);
-        // this.moisture = Number(moisturevalue);
-        // console.log(this.moisture)
+        await BleClient.startNotifications(
+          device.deviceId,
+          CONDUCTIVITY_UUID, 
+          CONDUCTIVITY_CHARATERISTIC_UUID,
+          (conductivityvalue) => {
+            console.log(dataViewToText(conductivityvalue));
+            this.conductivity = Number(dataViewToText(conductivityvalue));
+            console.log(this.conductivity)  
+          }
+        );
 
-        // let temperaturevalue = dataViewToText(
-        //   await BleClient.read(
-        //     device.deviceId, 
-        //     TEMPERATURE_UUID , 
-        //     TEMPERATURE_CHARATERISTIC_UUID )
-        // );
-        // console.log(temperaturevalue);
-        // this.temperature = Number(temperaturevalue);
-        // console.log(this.temperature)
+        await BleClient.startNotifications(
+          device.deviceId,
+          TEMPERATURE_UUID, 
+          TEMPERATURE_CHARATERISTIC_UUID,
+          (temperaturevalue) => {
+            console.log(dataViewToText(temperaturevalue));
+            this.temperature = Number(dataViewToText(temperaturevalue));
+            console.log(this.temperature)  
+          }
+        );
+        
+        await this.getTime();
 
-        // let conductivityvalue = dataViewToText(
-        //   await BleClient.read(
-        //     device.deviceId, 
-        //     CONDUCTIVITY_UUID ,  
-        //     CONDUCTIVITY_CHARATERISTIC_UUID )
-        // );
-        // console.log(conductivityvalue);
-        // this.conductivity = Number(conductivityvalue);
-        // console.log(this.conductivity);
       }catch (error){
         console.error("error in getting data", error);
       }
@@ -170,6 +175,10 @@ export class HomePage {
         duration: 2000,
       });
       toast.present();
+    }
+
+    getTime(){
+      this.time = new Date().toLocaleTimeString();
     }
 }
 
